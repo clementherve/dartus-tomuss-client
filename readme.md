@@ -4,32 +4,32 @@ This package allows you to login and fetch teaching units from Tomuss (https://t
 ## Example
 ```dart
 final Tomuss tomuss = Tomuss();
-final bool isAuthenticated =
-    await tomuss.authenticate("p1234567", "a_valid_password");
+final bool isAuthenticated = await tomuss.authenticate("p1234567", "a_valid_password");
+if (!isAuthenticated) {
+    // handle gracefully
+}
 
-if (isAuthenticated) {
-    final List<TeachingUnit> teachingUnits =
-        (await tomuss.getPage(Tomuss.currentSemester(DateTime.now())))
-            .getTeachingUnit();
+// you can fetch and parse the page for the current semester
+await tomuss.getPage(Tomuss.currentSemester(DateTime.now()));
 
-    // list teaching units
-    for (final TeachingUnit tu in teachingUnits) {
-        print(tu.name);
-        print("\tGrades:");
-        for (final Grade g in tu.grades) {
-        print("\t\t${g.name}: ${g.gradeNumerator}/${g.gradeDenominator}");
-        }
-
-        // list masters for current TU
-        print("\tMasters:");
-        for (final Teacher t in tu.masters) {
-        print("\t\t${t.name} (${t.email})");
-        }
+// list teaching units
+for (final TeachingUnit tu in tomuss.getTeachingUnit()) {
+    print(tu.name);
+    print("\tGrades:");
+    for (final Grade g in tu.grades) {
+        print("\t\t${g.name}: ${g.humanGrade}");
     }
 
-    // list semesters
-    for (final Semester s in tomuss.getSemesters()) {
-        print("${s.name} (${s.url})");
+    // list masters for current TU
+    print("\tMasters:");
+    for (final Teacher t in tu.masters) {
+        print("\t\t${t.name} (${t.email})");
     }
 }
+
+// list semesters
+for (final Semester s in tomuss.getSemesters()) {
+    print("${s.name} (${s.url})");
+}
+
 ```

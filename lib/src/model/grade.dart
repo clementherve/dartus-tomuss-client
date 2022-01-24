@@ -41,4 +41,5 @@ class Grade {
   double get gradeNumerator => _gradeNumerator;
   double get mediane => _mediane;
   bool get isValidGrade => _isValidGrade;
+  String get humanGrade => "$_gradeNumerator/$_gradeDenominator";
 }
