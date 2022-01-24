@@ -1,35 +1,44 @@
 import 'package:tomuss/src/utils/roundtoprecision.dart';
 
 class Grade {
-  late String name;
-  late String author;
+  late String _name;
+  late String _author;
 
-  late double gradeNumerator;
-  late int gradeDenominator;
-  late int rank;
-  late double average;
-  late double mediane;
-  late bool isValidGrade;
+  late double _gradeNumerator;
+  late int _gradeDenominator;
+  late int _rank;
+  late double _average;
+  late double _mediane;
+  late bool _isValidGrade;
 
   Grade.fromJSON(var id, var json, var stats, var line) {
-    rank = stats[json['the_id']]['rank'] ?? -1;
-    isValidGrade = (rank != -1);
-    if (!isValidGrade) {
+    _rank = stats[json['the_id']]['rank'] ?? -1;
+    _isValidGrade = (_rank != -1);
+    if (!_isValidGrade) {
       return;
     }
-    name = json['title'] ?? "";
-    author = json['author'] ?? "";
-    average = Round.round(stats[json['the_id']]['average']);
-    mediane = Round.round(stats[json['the_id']]['mediane']);
+    _name = json['title'] ?? "";
+    _author = json['author'] ?? "";
+    _average = Round.round(stats[json['the_id']]['average']);
+    _mediane = Round.round(stats[json['the_id']]['mediane']);
 
-    gradeNumerator =
+    _gradeNumerator =
         (line.length > 0 && id < line.length - 1 && line[id].length > 0)
             ? Round.round(double.tryParse(line[id][0].toString()))
             : double.nan;
 
-    gradeDenominator = int.tryParse(
+    _gradeDenominator = int.tryParse(
             RegExp(';([0-9]*)\\]').firstMatch(json['minmax'] ?? "")?.group(1) ??
                 "20") ??
         20; // "minmax": "[0;22]",
   }
+
+  String get name => _name;
+  String get author => _author;
+  int get rank => _rank;
+  int get gradeDenominator => _gradeDenominator;
+  double get average => _average;
+  double get gradeNumerator => _gradeNumerator;
+  double get mediane => _mediane;
+  bool get isValidGrade => _isValidGrade;
 }

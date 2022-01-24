@@ -1,5 +1,7 @@
 class Semester {
-  String name;
-  String url;
-  Semester(this.name, this.url);
+  final String _name;
+  final String _url;
+  Semester(this._name, this._url);
+  String get name => _name;
+  String get url => _url;
 }
