@@ -1,8 +1,7 @@
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
-import 'package:http/http.dart' as http;
-import 'package:tomuss/src/constant/constants.dart';
-
+import 'package:http/http.dart' as http; // TODO: migrate to dio
 import 'package:tomuss/src/model/semester.dart';
+import 'package:tomuss/src/utils/urlmanager.dart';
 import 'package:tomuss/src/model/teachingunit.dart';
 import 'package:tomuss/src/parser/htmlparser.dart';
 
@@ -56,24 +55,11 @@ class Tomuss {
     return response.body;
   }
 
-  static String currentSemester(final DateTime dt) {
-    // final DateTime dt = DateTime.now();
-    final String semester =
-        (dt.month >= 1 && dt.month < 9) ? "Printemps" : "Automne";
-    return "${Constants.tomuss}/S/${dt.year}/$semester";
+  static String currentSemester() {
+    return UrlManager.currentSemester(DateTime.now());
   }
 
-  static String previousSemester(final DateTime dt) {
-    // final DateTime dt = DateTime.now();
-    final String currentSemester =
-        (dt.month >= 1 && dt.month < 9) ? "Printemps" : "Automne";
-
-    final String prevSemester =
-        (currentSemester == 'Printemps') ? 'Automne' : 'Printemps';
-
-    final int prevYear =
-        (currentSemester == 'Printemps') ? dt.year - 1 : dt.year;
-
-    return "${Constants.tomuss}/S/${prevYear}/$prevSemester";
+  static String previousSemester() {
+    return UrlManager.previousSemester(DateTime.now());
   }
 }

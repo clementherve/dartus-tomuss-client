@@ -7,8 +7,7 @@ void main() async {
 
   if (isAuthenticated) {
     final List<TeachingUnit> teachingUnits =
-        (await tomuss.getPage(Tomuss.currentSemester(DateTime.now())))
-            .getTeachingUnit();
+        (await tomuss.getPage(Tomuss.currentSemester())).getTeachingUnit();
 
     // list teaching units
     for (final TeachingUnit tu in teachingUnits) {
