@@ -16,4 +16,6 @@ dev_dependencies:
 dependencies: 
   beautiful_soup_dart: ^0.2.0
   cookie_jar: ^3.0.1
+  dio: ^4.0.4
+  dio_cookie_manager: ^2.0.0
   http: ^0.13.4

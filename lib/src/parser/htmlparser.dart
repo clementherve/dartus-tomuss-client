@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:meta/meta.dart';
 import 'package:tomuss/src/model/grade.dart';
