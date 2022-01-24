@@ -10,7 +10,7 @@ if (!isAuthenticated) {
 }
 
 // you can fetch and parse the page for the current semester
-await tomuss.getPage(Tomuss.currentSemester(DateTime.now()));
+await tomuss.getPage(Tomuss.currentSemester());
 
 // list teaching units
 for (final TeachingUnit tu in tomuss.getTeachingUnit()) {
