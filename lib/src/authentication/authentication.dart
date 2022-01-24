@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:developer';
 
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:tomuss/src/constant/constants.dart';
+import 'package:dartus/src/constant/constants.dart';
 import 'package:meta/meta.dart';
 
 class Authentication {

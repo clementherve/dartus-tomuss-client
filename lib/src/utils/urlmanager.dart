@@ -1,4 +1,4 @@
-import 'package:tomuss/src/constant/constants.dart';
+import 'package:dartus/src/constant/constants.dart';
 
 class UrlManager {
   static String previousSemester(final DateTime dt) {

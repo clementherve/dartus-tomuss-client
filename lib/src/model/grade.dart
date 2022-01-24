@@ -1,4 +1,4 @@
-import 'package:tomuss/src/utils/roundtoprecision.dart';
+import 'package:dartus/src/utils/roundtoprecision.dart';
 
 class Grade {
   late String _name;

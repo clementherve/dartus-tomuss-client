@@ -1,7 +1,7 @@
-import 'package:tomuss/tomuss.dart';
+import 'package:dartus/tomuss.dart';
 
 void main() async {
-  final TomussClient tomuss = TomussClient();
+  final Dartus tomuss = Dartus();
   final bool isAuthenticated =
       await tomuss.authenticate("p1234567", "a_valid_password");
   if (!isAuthenticated) {
@@ -9,7 +9,7 @@ void main() async {
     return;
   }
 
-  final bool ok = await tomuss.getPage(TomussClient.currentSemester());
+  final bool ok = await tomuss.getPage(Dartus.currentSemester());
 
   if (!ok) {
     print("There was an error while fetching Tomuss");
@@ -21,7 +21,7 @@ void main() async {
     print(tu.name);
     print("\tGrades:");
     for (final Grade g in tu.grades) {
-      print("\t\t${g.name}: ${g.gradeNumerator}/${g.gradeDenominator}");
+      print("\t\t${g.name}: ${g.humanGrade}");
     }
 
     // list masters for current TU

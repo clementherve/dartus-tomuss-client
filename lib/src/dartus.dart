@@ -1,21 +1,23 @@
+import 'dart:io';
+
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:tomuss/src/authentication/authentication.dart';
-import 'package:tomuss/src/constant/constants.dart';
-import 'package:tomuss/src/model/semester.dart';
-import 'package:tomuss/src/utils/urlmanager.dart';
-import 'package:tomuss/src/model/teachingunit.dart';
-import 'package:tomuss/src/parser/htmlparser.dart';
+import 'package:dartus/src/authentication/authentication.dart';
+import 'package:dartus/src/constant/constants.dart';
+import 'package:dartus/src/model/semester.dart';
+import 'package:dartus/src/utils/urlmanager.dart';
+import 'package:dartus/src/model/teachingunit.dart';
+import 'package:dartus/src/parser/htmlparser.dart';
 
-class TomussClient {
+class Dartus {
   late bool _isAuthenticated;
   late Dio _dio;
   late HTMLparser _parser;
   late Authentication _authentication;
 
-  TomussClient() {
+  Dartus() {
     _parser = HTMLparser();
     _authentication = Authentication();
     _dio = Dio(BaseOptions(connectTimeout: 1000 * 3, followRedirects: true));
@@ -39,26 +41,26 @@ class TomussClient {
   Future<bool> getPage(final String url) async {
     if (!_isAuthenticated) return false;
 
-    String content = (await _request(url)).getOrElse(() => "");
+    String content = await _request(url, null);
 
-    while (content.length < 1000 && content.isNotEmpty) {
-      // there is a delay if you refresh tomuss too quicky
-      // get the delay and wait
+    if (content.length < 1000) {
       final BeautifulSoup bs = BeautifulSoup(content);
-      final int delay =
-          int.tryParse(bs.find("#t")?.text ?? "10") ?? 10 + 1; // get #t
-      await Future.delayed(
-          Duration(seconds: delay)); // sleep(Duration(seconds:1));
+      // there is a delay if you refresh tomuss too quicky
+      final double delay = double.tryParse(bs.find("#t")?.text ?? "") ?? 15.0;
 
-      // then do the request again
-      content = (await _request(url)).getOrElse(() => "");
+      return Future.delayed(Duration(seconds: delay.round() + 2), () async {
+        content = await Future.sync(() => _request(url, delay));
+        if (content.length > 1000) {
+          _parser.parse(content);
+        }
+        return content.length > 1000;
+      });
     }
 
-    _parser.parse(content);
-    return true;
+    return content.length > 1000;
   }
 
-  Future<Option<String>> _request(final String url) async {
+  Future<String> _request(final String url, double? wait) async {
     final Response response = await _dio.get(
         "https://cas.univ-lyon1.fr/cas/login?service=$url/?unsafe=1",
         options: Options(headers: {
@@ -72,8 +74,8 @@ class TomussClient {
     if ((response.statusCode ?? 400) >= 400) {
       throw "Failed to fetch the page: ${response.statusCode}";
     }
-    final String content = response.data;
-    return (content.isNotEmpty) ? Some(content) : None();
+
+    return response.data ?? "";
   }
 
   static String currentSemester() {

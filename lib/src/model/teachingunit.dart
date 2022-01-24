@@ -1,6 +1,6 @@
-import 'package:tomuss/src/model/grade.dart';
-import 'package:tomuss/src/model/teacher.dart';
-import 'package:tomuss/src/model/text.dart';
+import 'package:dartus/src/model/grade.dart';
+import 'package:dartus/src/model/teacher.dart';
+import 'package:dartus/src/model/text.dart';
 
 class TeachingUnit {
   final String _name;

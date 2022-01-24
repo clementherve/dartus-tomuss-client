@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:tomuss/src/model/grade.dart';
-import 'package:tomuss/src/model/semester.dart';
-import 'package:tomuss/src/model/teacher.dart';
-import 'package:tomuss/src/model/teachingunit.dart';
-import 'package:tomuss/src/model/text.dart';
+import 'package:dartus/src/model/grade.dart';
+import 'package:dartus/src/model/semester.dart';
+import 'package:dartus/src/model/teacher.dart';
+import 'package:dartus/src/model/teachingunit.dart';
+import 'package:dartus/src/model/text.dart';
 
 class HTMLparser {
   late dynamic json;
