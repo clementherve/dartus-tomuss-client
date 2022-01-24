@@ -64,10 +64,9 @@ class HTMLparser {
       columns.forEach((item) {
         if (item['type']
             .toString()
-            .toLowerCase()
             .contains(RegExp('note|moy|cow', caseSensitive: false))) {
           final Grade grade = Grade.fromJSON(id, item, stats, line);
-          (grade.isGrade) ? grades.add(grade) : null;
+          (grade.isValidGrade) ? grades.add(grade) : null;
         } else {
           final Text text = Text.fromJSON(id, item, line);
           (text.isValidText) ? texts.add(text) : null;
@@ -82,7 +81,7 @@ class HTMLparser {
   }
 
   List<Semester> extractSemesters() {
-    final int? key = getIndexForKey('Semesters'); // [12][1]["2016/Automne"]
+    final int? key = getIndexForKey('Semesters');
     if (key == null) return [];
 
     final List<Semester> semesters = [];

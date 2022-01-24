@@ -1,4 +1,4 @@
-import 'package:tomuss/src/utils/stringcasingextension.dart';
+import 'package:tomuss/src/utils/stringcasing.dart';
 
 class Teacher {
   late String name;

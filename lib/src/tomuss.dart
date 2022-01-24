@@ -20,11 +20,11 @@ class Tomuss {
     return isAuthenticated;
   }
 
-  List<TeachingUnit> getTeachingUnit(final String url) {
+  List<TeachingUnit> getTeachingUnit() {
     return _parser.extractTeachingUnits();
   }
 
-  List<Semester> getSemesters(final String url) {
+  List<Semester> getSemesters() {
     return _parser.extractSemesters();
   }
 
