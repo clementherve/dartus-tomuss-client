@@ -5,11 +5,11 @@ import 'package:tomuss/src/utils/urlmanager.dart';
 import 'package:tomuss/src/model/teachingunit.dart';
 import 'package:tomuss/src/parser/htmlparser.dart';
 
-class Tomuss {
+class TomussClient {
   late bool isAuthenticated;
   late HTMLparser _parser;
 
-  Tomuss() {
+  TomussClient() {
     _parser = HTMLparser();
   }
 
@@ -28,7 +28,7 @@ class Tomuss {
     return _parser.extractSemesters();
   }
 
-  Future<Tomuss> getPage(final String url) async {
+  Future<TomussClient> getPage(final String url) async {
     String content = await _request(url);
     while (content.length < 1000) {
       // there is a delay if you refresh tomuss too quicky

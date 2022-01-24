@@ -3,7 +3,7 @@ This package allows you to login and fetch teaching units from Tomuss (https://t
 
 ## Example
 ```dart
-final Tomuss tomuss = Tomuss();
+final TomussClient tomuss = TomussClient();
 final bool isAuthenticated = await tomuss.authenticate("p1234567", "a_valid_password");
 if (!isAuthenticated) {
     // handle gracefully
