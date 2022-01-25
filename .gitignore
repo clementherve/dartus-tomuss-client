@@ -6,4 +6,4 @@
 build/
 .vscode/
 mockdata/
-test/
+private-test/
