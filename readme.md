@@ -1,4 +1,4 @@
-# 🚧 Tomuss Dart
+# Dartus: a Dart Tomuss Client
 This package allows you to login and fetch teaching units from Tomuss (https://tomuss.univ-lyon1.fr).
 
 ## Example
