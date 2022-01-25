@@ -26,6 +26,6 @@ jobs:
 
       - name: Run tests
         env:
-          username: ${{ secrets.USERNAME_1 }}
-          password: ${{ secrets.PASSWORD_1 }}
+          username: ${{ TestEnvt.USERNAME_1 }}
+          password: ${{ TestEnvt.PASSWORD_1 }}
         run: dart test
