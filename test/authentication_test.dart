@@ -8,13 +8,16 @@ void main() async {
   late Authentication _authOK;
 
   setUp(() {
-    load('test/.env');
-
     String username = Platform.environment['username'] ?? "";
     String password = Platform.environment['password'] ?? "";
-    if (isEveryDefined(['username', 'password'])) {
-      username = env['username'] ?? "";
-      password = env['password'] ?? "";
+    try {
+      load('test/.env');
+      if (isEveryDefined(['username', 'password'])) {
+        username = env['username'] ?? "";
+        password = env['password'] ?? "";
+      }
+    } catch (e) {
+      // do nothing. Tests will fail and messages will appear if necessary.
     }
 
     if (username.isEmpty || password.isEmpty) {
