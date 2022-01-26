@@ -1,6 +1,10 @@
 import 'package:dartus/src/constant/constants.dart';
 
-class UrlManager {
+class URLCreator {
+  static String basic() {
+    return Constants.tomuss;
+  }
+
   static String previousSemester(final DateTime dt) {
     final String currentSemester =
         (dt.month >= 1 && dt.month < 9) ? "Printemps" : "Automne";

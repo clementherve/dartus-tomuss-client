@@ -1,47 +1,34 @@
 import 'dart:io';
 
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:dartus/src/parser/parsedpage.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dartus/src/authentication/authentication.dart';
 import 'package:dartus/src/constant/constants.dart';
-import 'package:dartus/src/model/semester.dart';
-import 'package:dartus/src/utils/urlmanager.dart';
-import 'package:dartus/src/model/teachingunit.dart';
+import 'package:dartus/src/utils/urlcreator.dart';
 import 'package:dartus/src/parser/htmlparser.dart';
 
 class Dartus {
-  late bool _isAuthenticated;
   late Dio _dio;
-  late HTMLparser _parser;
   late Authentication _authentication;
 
-  Dartus() {
-    _parser = HTMLparser();
-    _authentication = Authentication();
+  Dartus(final String username, final String password) {
+    _authentication = Authentication(username, password);
     _dio = Dio(BaseOptions(connectTimeout: 1000 * 3, followRedirects: true));
     _dio.interceptors.add(CookieManager(_authentication.cookieJar));
   }
 
-  Future<bool> authenticate(
-      final String username, final String password) async {
-    _isAuthenticated = await _authentication.authenticate(username, password);
-    return _isAuthenticated;
+  Future<bool> authenticate() async {
+    return await _authentication.authenticate();
   }
 
-  List<TeachingUnit> getTeachingUnit() {
-    return _parser.extractTeachingUnits();
-  }
-
-  List<Semester> getSemesters() {
-    return _parser.extractSemesters();
-  }
-
-  Future<bool> getPage(final String url) async {
-    if (!_isAuthenticated) return false;
+  Future<Option<ParsedPage>> getParsedPage(final String url) async {
+    if (!_authentication.isAuthenticated) return None();
 
     String content = await _request(url, null);
+    final HTMLparser parser = HTMLparser();
 
     if (content.length < 1000) {
       final BeautifulSoup bs = BeautifulSoup(content);
@@ -51,13 +38,23 @@ class Dartus {
       return Future.delayed(Duration(seconds: delay.round() + 2), () async {
         content = await Future.sync(() => _request(url, delay));
         if (content.length > 1000) {
-          _parser.parse(content);
+          parser.parse(content);
+          return Some(ParsedPage(
+              parser.extractSemesters(), parser.extractTeachingUnits()));
+        } else {
+          return None();
         }
-        return content.length > 1000;
       });
     }
 
-    return content.length > 1000;
+    parser.parse(content);
+
+    return Some(
+        ParsedPage(parser.extractSemesters(), parser.extractTeachingUnits()));
+  }
+
+  Future<void> logout() async {
+    _authentication.logout();
   }
 
   Future<String> _request(final String url, double? wait) async {
@@ -79,10 +76,10 @@ class Dartus {
   }
 
   static String currentSemester() {
-    return UrlManager.currentSemester(DateTime.now());
+    return URLCreator.currentSemester(DateTime.now());
   }
 
   static String previousSemester() {
-    return UrlManager.previousSemester(DateTime.now());
+    return URLCreator.previousSemester(DateTime.now());
   }
 }

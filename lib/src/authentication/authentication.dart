@@ -11,36 +11,28 @@ class Authentication {
   late bool _isAuthenticated = false;
   late CookieJar _cookieJar;
   late Dio _dio;
+  late String _username;
+  late String _password;
 
-  Authentication() {
+  Authentication(final String username, final String password) {
+    _username = username;
+    _password = password;
     _cookieJar = CookieJar();
     _dio = Dio(BaseOptions(connectTimeout: 1000 * 3, followRedirects: true));
     _dio.interceptors.add(CookieManager(_cookieJar));
   }
 
-  Future<bool> authenticate(
-      final String username, final String password) async {
-    _isAuthenticated = (await shouldReconnect())
-        ? await authenticationRequest(await getExecToken(), username, password)
+  Future<bool> authenticate() async {
+    _isAuthenticated = (await _shouldReconnect())
+        ? await _authenticationRequest(
+            await getExecToken(), _username, _password)
         : _isAuthenticated;
 
     return _isAuthenticated;
   }
 
-  Future<String?> getCookiesForService(final String service) async {
-    final Response response =
-        await _dio.get(Constants.caslogin + "?service=$service/?unsafe=1",
-            options: Options(followRedirects: true, maxRedirects: 5, headers: {
-              'User-Agent': Constants.userAgent,
-              'cookie': await getCasCookies(),
-              'DNT': '1',
-            }));
-
-    if ((response.statusCode ?? 400) >= 400) {
-      return null;
-    }
-
-    return await getCookiesForURL(Constants.caslogin + "?service=$service");
+  Future<void> logout() async {
+    // TODO
   }
 
   @visibleForTesting
@@ -64,8 +56,7 @@ class Authentication {
     return execToken;
   }
 
-  @visibleForTesting
-  Future<bool> shouldReconnect() async {
+  Future<bool> _shouldReconnect() async {
     final List<Cookie> cookies =
         await _cookieJar.loadForRequest(Uri.parse(Constants.caslogin));
 
@@ -79,8 +70,7 @@ class Authentication {
     return false;
   }
 
-  @visibleForTesting
-  Future<bool> authenticationRequest(final String execToken,
+  Future<bool> _authenticationRequest(final String execToken,
       final String username, final String password) async {
     final Response response = await _dio.post(Constants.caslogin,
         data: {
@@ -106,12 +96,12 @@ class Authentication {
     return casCookies.isNotEmpty && casCookies.contains("TGC=");
   }
 
+  @visibleForTesting
   Future<String> getCasCookies() async {
-    return await getCookiesForURL(Constants.caslogin);
+    return await _getCookiesForURL(Constants.caslogin);
   }
 
-  @visibleForTesting
-  Future<String> getCookiesForURL(final String url) async {
+  Future<String> _getCookiesForURL(final String url) async {
     String cookiesString = "";
     final List<Cookie> cookies =
         await _cookieJar.loadForRequest(Uri.parse(url));

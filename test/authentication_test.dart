@@ -1,41 +1,39 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:dartus/src/authentication/authentication.dart';
+import 'package:dotenv/dotenv.dart' show load, env;
 
 void main() async {
-  late Authentication _auth;
+  late Authentication _authOK;
+
   setUp(() {
-    _auth = Authentication();
-  });
+    load('test/.env');
 
-  test('getExecToken', () async {
-    expect(await _auth.getExecToken(), isNotEmpty);
-  });
-
-  test('authenticate.ok', () async {
-    final String username = Platform.environment['username'] ?? "";
-    final String password = Platform.environment['password'] ?? "";
+    final String username = env['username'] ?? "";
+    final String password = env['password'] ?? "";
 
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");
     }
 
-    final bool isAuthenticated = await _auth.authenticate(
-        username, utf8.decode(base64.decode(password)).trim());
+    _authOK = Authentication(username, password);
+  });
 
-    final String cookies = await _auth.getCasCookies();
+  test('getExecToken', () async {
+    expect(await _authOK.getExecToken(), isNotEmpty);
+  });
 
+  test('authenticate.ok', () async {
+    final bool isAuthenticated = await _authOK.authenticate();
+    final String cookies = await _authOK.getCasCookies();
     expect(isAuthenticated, equals(true));
     expect(cookies, contains("TGC="));
   });
 
   test('authenticate.fail', () async {
-    final bool isAuthenticated =
-        await _auth.authenticate("p1234567", "not_valid_password");
+    Authentication authBAD = Authentication("p1234567", "not_valid_password");
+    final bool isAuthenticated = await authBAD.authenticate();
 
-    final String cookies = await _auth.getCasCookies();
+    final String cookies = await _authOK.getCasCookies();
 
     expect(isAuthenticated, equals(false));
     expect(cookies, isNot(contains("TGC=")));
