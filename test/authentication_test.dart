@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 import 'package:dartus/src/authentication/authentication.dart';
-import 'package:dotenv/dotenv.dart' show load, env;
+import 'package:dotenv/dotenv.dart' show env, isEveryDefined, load;
 
 void main() async {
   late Authentication _authOK;
@@ -10,10 +10,12 @@ void main() async {
   setUp(() {
     load('test/.env');
 
-    final String username =
-        env['username'] ?? Platform.environment['username'] ?? "";
-    final String password =
-        env['password'] ?? Platform.environment['password'] ?? "";
+    String username = Platform.environment['username'] ?? "";
+    String password = Platform.environment['password'] ?? "";
+    if (isEveryDefined(['username', 'password'])) {
+      username = env['username'] ?? "";
+      password = env['password'] ?? "";
+    }
 
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");
