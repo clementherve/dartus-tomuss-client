@@ -96,7 +96,6 @@ class Authentication {
     return casCookies.isNotEmpty && casCookies.contains("TGC=");
   }
 
-  @visibleForTesting
   Future<String> getCasCookies() async {
     return await _getCookiesForURL(Constants.caslogin);
   }

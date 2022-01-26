@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
 import 'package:dartus/src/model/grade.dart';
 import 'package:dartus/src/model/semester.dart';
 import 'package:dartus/src/model/teacher.dart';
@@ -21,20 +20,17 @@ class HTMLparser {
     json = jsonDecode(jsonReady);
   }
 
-  @visibleForTesting
   String? extractContent(final String rawContent) {
     final RegExp regExp = RegExp("display_update\\((.*?),\"Top\"");
     final RegExpMatch? match = regExp.firstMatch(rawContent);
     return match?.group(1);
   }
 
-  @visibleForTesting
   String? toJSONready(String? extractedContent) {
     extractedContent = extractedContent?.replaceAll("\\x3E", ">") ?? "";
     return extractedContent.replaceAll("NaN", "-1");
   }
 
-  @visibleForTesting
   int? getIndexForKey(final String name) {
     int i = 0;
     for (var key in json) {

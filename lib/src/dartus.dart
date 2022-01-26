@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:dartus/src/parser/parsedpage.dart';
 import 'package:dartz/dartz.dart';
