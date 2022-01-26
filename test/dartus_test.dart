@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartus/src/parser/parsedpage.dart';
 import 'package:dartus/tomuss.dart';
 import 'package:dartz/dartz.dart';
@@ -13,8 +15,10 @@ void main() async {
   setUpAll(() {
     load('test/.env');
 
-    final String username = env['username'] ?? "";
-    final String password = env['password'] ?? "";
+    final String username =
+        env['username'] ?? Platform.environment['username'] ?? "";
+    final String password =
+        env['password'] ?? Platform.environment['password'] ?? "";
 
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");
