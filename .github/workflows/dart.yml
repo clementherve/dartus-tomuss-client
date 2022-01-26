@@ -28,6 +28,8 @@ jobs:
           envkey_username: ${{ secrets.USERNAME_1 }}
           envkey_password: ${{ secrets.PASSWORD_1 }}
           file_name: .env
-
+      
+      - name: debug
+        run: ls -Al && ls -Al /
       - name: Run tests
         run: dart test
