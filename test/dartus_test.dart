@@ -12,8 +12,8 @@ void main() async {
 
   setUpAll(() {
     load();
-    final String username = env['username'] ?? "";
-    final String password = env['password'] ?? "";
+    final String username = env['USERNAME'] ?? "";
+    final String password = env['PASSWORD'] ?? "";
 
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");
