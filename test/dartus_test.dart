@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:dartus/src/parser/parsedpage.dart';
 import 'package:dartus/tomuss.dart';
 import 'package:dartz/dartz.dart';
 import 'package:test/test.dart';
 import 'package:dartus/src/utils/urlcreator.dart';
 
-import 'package:dotenv/dotenv.dart' show env, isEveryDefined, load;
+import 'package:dotenv/dotenv.dart' show env, load;
 
 void main() async {
   late Dartus tomussOK;

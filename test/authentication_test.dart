@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:test/test.dart';
 import 'package:dartus/src/authentication/authentication.dart';
 import 'package:dotenv/dotenv.dart' show env, load;
