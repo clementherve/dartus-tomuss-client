@@ -25,11 +25,10 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1
         with:
-          envkey_username: ${{ secrets.USERNAME_1 }}
-          envkey_password: ${{ secrets.PASSWORD_1 }}
+          envkey_foobar: "this is a test"
           file_name: .env
       
       - name: debug
-        run: ls -Al && ls -Al /
+        run: ls -Al && cat .env
       - name: Run tests
         run: dart test
