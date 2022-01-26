@@ -13,17 +13,9 @@ void main() async {
   late Dartus tomussBAD;
 
   setUpAll(() {
-    String username = Platform.environment['username'] ?? "";
-    String password = Platform.environment['password'] ?? "";
-    try {
-      load('test/.env');
-      if (isEveryDefined(['username', 'password'])) {
-        username = env['username'] ?? "";
-        password = env['password'] ?? "";
-      }
-    } catch (e) {
-      // do nothing. Tests will fail and messages will appear if necessary.
-    }
+    load();
+    final String username = env['username'] ?? "";
+    final String password = env['password'] ?? "";
 
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");

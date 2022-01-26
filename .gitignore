@@ -7,4 +7,4 @@ build/
 .vscode/
 mockdata/
 private-test/
-test/.env
+.env

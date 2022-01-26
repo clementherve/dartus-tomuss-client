@@ -27,7 +27,6 @@ jobs:
         with:
           envkey_username: ${{ secrets.USERNAME_1 }}
           envkey_password: ${{ secrets.PASSWORD_1 }}
-          directory: /test
           file_name: .env
 
       - name: Run tests

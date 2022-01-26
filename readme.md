@@ -4,8 +4,7 @@ This package allows you to login and fetch teaching units from Tomuss (https://t
 ## Example
 ```dart
 final Dartus tomuss = Dartus("p1234567", "a_valid_password");
-final bool isAuthenticated = await tomuss.authenticate();
-if (!isAuthenticated) {
+if (!await tomuss.authenticate()) {
     // handle gracefully
 }
 
