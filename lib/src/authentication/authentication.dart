@@ -24,8 +24,7 @@ class Authentication {
 
   Future<bool> authenticate() async {
     _isAuthenticated = (await _shouldReconnect())
-        ? await _authenticationRequest(
-            await getExecToken(), _username, _password)
+        ? await _authenticationRequest(await getExecToken())
         : _isAuthenticated;
 
     return _isAuthenticated;
@@ -70,12 +69,11 @@ class Authentication {
     return false;
   }
 
-  Future<bool> _authenticationRequest(final String execToken,
-      final String username, final String password) async {
+  Future<bool> _authenticationRequest(final String execToken) async {
     final Response response = await _dio.post(Constants.caslogin,
         data: {
-          'username': username,
-          'password': password,
+          'username': _username,
+          'password': _password,
           'lt': '',
           'execution': execToken,
           '_eventId': 'submit',
