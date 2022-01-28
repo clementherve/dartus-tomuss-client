@@ -34,9 +34,9 @@ class Authentication {
     // TODO
   }
 
-  Future<String> serviceRequest(final String url) async {
+  Future<String> serviceRequest(final String url, {bool unsafe = true}) async {
     final Response response = await _dio.get(
-        "https://cas.univ-lyon1.fr/cas/login?service=$url/?unsafe=1",
+        "https://cas.univ-lyon1.fr/cas/login?service=$url${(unsafe ? '/?unsafe=1' : '')}",
         options: Options(headers: {
           'User-Agent': Constants.userAgent,
           'Cookie': await getCasCookies(),
