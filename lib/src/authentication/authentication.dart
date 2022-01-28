@@ -34,6 +34,24 @@ class Authentication {
     // TODO
   }
 
+  Future<String> serviceRequest(final String url) async {
+    final Response response = await _dio.get(
+        "https://cas.univ-lyon1.fr/cas/login?service=$url/?unsafe=1",
+        options: Options(headers: {
+          'User-Agent': Constants.userAgent,
+          'Cookie': await getCasCookies(),
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+          'DNT': '1', // Do Not Track, because, why not
+        }, maxRedirects: 5));
+
+    if ((response.statusCode ?? 400) >= 400) {
+      throw "Failed to fetch the page: ${response.statusCode}";
+    }
+
+    return response.data ?? "";
+  }
+
   @visibleForTesting
   Future<String> getExecToken() async {
     // perform the request and check the status code

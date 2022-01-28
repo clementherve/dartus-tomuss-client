@@ -3,7 +3,7 @@ import 'package:dartus/tomuss.dart';
 import 'package:dartz/dartz.dart';
 
 void main() async {
-  final Dartus tomuss = Dartus("p1234567", "a_valid_password");
+  final Dartus tomuss = Dartus(Authentication("p1234567", "a_valid_password"));
   final bool isAuthenticated = await tomuss.authenticate();
   if (!isAuthenticated) {
     print("You are not authenticated. Please check your username and password");

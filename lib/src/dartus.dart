@@ -4,16 +4,14 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dartus/src/authentication/authentication.dart';
-import 'package:dartus/src/constant/constants.dart';
 import 'package:dartus/src/utils/urlcreator.dart';
 import 'package:dartus/src/parser/htmlparser.dart';
 
 class Dartus {
   late Dio _dio;
-  late Authentication _authentication;
+  final Authentication _authentication;
 
-  Dartus(final String username, final String password) {
-    _authentication = Authentication(username, password);
+  Dartus(this._authentication) {
     _dio = Dio(BaseOptions(connectTimeout: 1000 * 3, followRedirects: true));
     _dio.interceptors.add(CookieManager(_authentication.cookieJar));
   }
@@ -25,7 +23,7 @@ class Dartus {
   Future<Option<ParsedPage>> getParsedPage(final String url) async {
     if (!_authentication.isAuthenticated) return None();
 
-    String content = await _request(url, null);
+    String content = await _authentication.serviceRequest(url);
     final HTMLparser parser = HTMLparser();
 
     if (content.length < 1000) {
@@ -34,7 +32,7 @@ class Dartus {
       final double delay = double.tryParse(bs.find("#t")?.text ?? "") ?? 15.0;
 
       return Future.delayed(Duration(seconds: delay.round() + 2), () async {
-        content = await Future.sync(() => _request(url, delay));
+        content = await Future.sync(() => _authentication.serviceRequest(url));
         if (content.length > 1000) {
           parser.parse(content);
           return Some(ParsedPage(
@@ -53,24 +51,6 @@ class Dartus {
 
   Future<void> logout() async {
     _authentication.logout();
-  }
-
-  Future<String> _request(final String url, double? wait) async {
-    final Response response = await _dio.get(
-        "https://cas.univ-lyon1.fr/cas/login?service=$url/?unsafe=1",
-        options: Options(headers: {
-          'User-Agent': Constants.userAgent,
-          'Cookie': await _authentication.getCasCookies(),
-          'Connection': 'keep-alive',
-          'Upgrade-Insecure-Requests': '1',
-          'DNT': '1', // Do Not Track, because, why not
-        }, maxRedirects: 5));
-
-    if ((response.statusCode ?? 400) >= 400) {
-      throw "Failed to fetch the page: ${response.statusCode}";
-    }
-
-    return response.data ?? "";
   }
 
   static String currentSemester() {

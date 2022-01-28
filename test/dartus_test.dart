@@ -18,8 +18,8 @@ void main() async {
     if (username.isEmpty || password.isEmpty) {
       fail("username or password were empty. check your envt variables");
     }
-    tomussOK = Dartus(username, password);
-    tomussBAD = Dartus("p1234567", "not_valid_password");
+    tomussOK = Dartus(Authentication(username, password));
+    tomussBAD = Dartus(Authentication("p1234567", "not_valid_password"));
   });
 
   test('Dartus.authenticate ok', () async {
