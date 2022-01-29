@@ -31,7 +31,7 @@ class Authentication {
   }
 
   Future<void> logout() async {
-    // TODO
+    await _dio.get("https://cas.univ-lyon1.fr/cas/logout");
   }
 
   Future<String> serviceRequest(final String url, {bool unsafe = true}) async {
