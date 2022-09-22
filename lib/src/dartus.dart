@@ -16,7 +16,7 @@ class Dartus {
     _dio.interceptors.add(CookieManager(_authentication.cookieJar));
   }
 
-  get authentication => _authentication;
+  Authentication get authentication => _authentication;
 
   Future<bool> authenticate() async {
     return await _authentication.authenticate();
