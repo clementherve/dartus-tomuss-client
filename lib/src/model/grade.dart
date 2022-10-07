@@ -13,7 +13,6 @@ class Grade {
   late int _groupeSize;
 
   Grade.fromJSON(var id, var json, var stats, var line) {
-    print(json);
     _rank = stats[json['the_id']]['rank'] ?? -1;
     _groupeSize = stats[json['the_id']]['nr'] ?? -1;
     _isValidGrade = (_rank != -1);
