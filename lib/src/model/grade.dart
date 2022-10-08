@@ -10,9 +10,11 @@ class Grade {
   late double _average;
   late double _mediane;
   late bool _isValidGrade;
+  late int _groupeSize;
 
   Grade.fromJSON(var id, var json, var stats, var line) {
     _rank = stats[json['the_id']]['rank'] ?? -1;
+    _groupeSize = stats[json['the_id']]['nr'] ?? -1;
     _isValidGrade = (_rank != -1);
     if (!_isValidGrade) {
       return;
@@ -36,6 +38,7 @@ class Grade {
   String get name => _name;
   String get author => _author;
   int get rank => _rank;
+  int get groupSize => _groupeSize;
   int get gradeDenominator => _gradeDenominator;
   double get average => _average;
   double get gradeNumerator => _gradeNumerator;

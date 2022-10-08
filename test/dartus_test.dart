@@ -4,14 +4,14 @@ import 'package:dartz/dartz.dart';
 import 'package:test/test.dart';
 import 'package:dartus/src/utils/urlcreator.dart';
 
-import 'package:dotenv/dotenv.dart' show env, load;
+import 'package:dotenv/dotenv.dart';
 
 void main() async {
   late Dartus tomussOK;
   late Dartus tomussBAD;
-
+  DotEnv env = DotEnv(includePlatformEnvironment: true);
   setUpAll(() {
-    load();
+    env.load();
     final String username = env['USERNAME'] ?? "";
     final String password = env['PASSWORD'] ?? "";
 

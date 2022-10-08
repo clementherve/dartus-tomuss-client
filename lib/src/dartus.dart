@@ -12,9 +12,11 @@ class Dartus {
   final Authentication _authentication;
 
   Dartus(this._authentication) {
-    _dio = Dio(BaseOptions(connectTimeout: 1000 * 3, followRedirects: true));
+    _dio = Dio(BaseOptions(connectTimeout: 1000 * 100, followRedirects: true));
     _dio.interceptors.add(CookieManager(_authentication.cookieJar));
   }
+
+  Authentication get authentication => _authentication;
 
   Future<bool> authenticate() async {
     return await _authentication.authenticate();
