@@ -30,7 +30,7 @@ class Grade {
             : double.nan;
 
     _gradeDenominator = int.tryParse(
-            RegExp(';([0-9]*)\\]').firstMatch(json['minmax'] ?? "")?.group(1) ??
+        (json['minmax'] ?? "").split(";").last.replaceAll("]", "") ??
                 "20") ??
         20; // "minmax": "[0;22]",
   }
