@@ -5,7 +5,7 @@ class Grade {
   late String _author;
 
   late double _gradeNumerator;
-  late int _gradeDenominator;
+  late double _gradeDenominator;
   late int _rank;
   late double _average;
   late double _mediane;
@@ -29,7 +29,7 @@ class Grade {
             ? Round.round(double.tryParse(line[id][0].toString()))
             : double.nan;
 
-    _gradeDenominator = int.tryParse(
+    _gradeDenominator = double.tryParse(
         (json['minmax'] ?? "").split(";").last.replaceAll("]", "") ??
                 "20") ??
         20; // "minmax": "[0;22]",
@@ -39,7 +39,7 @@ class Grade {
   String get author => _author;
   int get rank => _rank;
   int get groupSize => _groupeSize;
-  int get gradeDenominator => _gradeDenominator;
+  double get gradeDenominator => _gradeDenominator;
   double get average => _average;
   double get gradeNumerator => _gradeNumerator;
   double get mediane => _mediane;
