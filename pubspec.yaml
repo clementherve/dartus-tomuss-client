@@ -13,5 +13,6 @@ dependencies:
   beautiful_soup_dart: ^0.3.0
   cookie_jar: ^3.0.1
   dartz: ^0.10.1
-  dio: ^4.0.4
-  dio_cookie_manager: ^2.0.0
+  requests: ^4.7.0
+#  dio: ^4.0.4
+#  dio_cookie_manager: ^2.0.0

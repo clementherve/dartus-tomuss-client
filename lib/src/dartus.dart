@@ -1,20 +1,15 @@
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:dartus/src/parser/parsedpage.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:dartus/src/authentication/authentication.dart';
 import 'package:dartus/src/utils/urlcreator.dart';
 import 'package:dartus/src/parser/htmlparser.dart';
 
 class Dartus {
-  late Dio _dio;
   final Authentication _authentication;
 
-  Dartus(this._authentication) {
-    _dio = Dio(BaseOptions(connectTimeout: 1000 * 100, followRedirects: true));
-    _dio.interceptors.add(CookieManager(_authentication.cookieJar));
-  }
+  const Dartus(this._authentication);
+
 
   Authentication get authentication => _authentication;
 
